@@ -20,8 +20,12 @@ const App = () => {
       setUser(user);
       setUsername(user.username)
     }
-    // Fetch all blogs
-    blogService.getAll().then(blogs => setBlogs(blogs));
+    const fetchBlogs = async () => {
+      const allBlogs = await blogService.getAll();
+      setBlogs(allBlogs);
+    };
+
+    fetchBlogs();
   }, [])
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -69,6 +73,10 @@ const App = () => {
     </form>      
   )
 
+  const updateBlogs = (updatedBlog) => {
+    setBlogs(blogs.map(blog => blog.id !== updatedBlog.id ? blog : updatedBlog));
+  };
+
   const addBlog = async (noteObject) => {
     try {
       const newBlog = await blogService.createBlog(noteObject)
@@ -105,7 +113,7 @@ const App = () => {
             <BlogForm createBlog={addBlog} />
           </Togglable>
           {blogs.map((blog) => (
-            <Blog key={blog.id} blog={blog} />
+            <Blog key={blog.id} blog={blog} updateBlogs={updateBlogs}/>
           ))}
         </div>
       )}

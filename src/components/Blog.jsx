@@ -38,8 +38,9 @@ const Blog = ({blog,updateBlogs}) => {
                 detailsVisible && 
                 <div style={blogStyle}>
                     <p>{blog.author}</p>
-                    <p>{blog.url}</p>
+                    <a href="#"><p>{blog.url}</p></a>
                     <p>likes {blog.likes} <button onClick={handleLike}>like</button></p>
+                    <p>{blog.user && blog.user.username}</p>
                 </div>
             }
         </>

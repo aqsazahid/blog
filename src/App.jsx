@@ -37,7 +37,7 @@ const App = () => {
       setUser(user);
       setUsername(user.username);
       setPassword('');
-    } catch (exception) {
+    } catch {
       setMessageType('error');
       setErrorMessage('Wrong username or password');
       setTimeout(() => {
@@ -92,7 +92,7 @@ const App = () => {
       setTimeout(() => {
         setErrorMessage(null);
       }, 5000);
-    }catch (exception) {
+    }catch {
       setMessageType('error');
       setErrorMessage('Wrong entries');
       setTimeout(() => {

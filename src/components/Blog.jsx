@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import PropTypes from 'prop-types'
 import blogService from '../services/blogs'
 const Blog = ({blog,updateBlogs, user,deleteBlogs}) => {
     const [detailsVisible, setDetailsVisible] = useState(false);
@@ -31,7 +32,7 @@ const Blog = ({blog,updateBlogs, user,deleteBlogs}) => {
         const confirmDelete = window.confirm(`Are you sure you want to delete the blog "${blog.title}"?`);
         if (confirmDelete) {
             try {
-                const res = await blogService.deleteBlog(blog.id)
+                await blogService.deleteBlog(blog.id)
                 deleteBlogs(blog.id)
             }catch (error) {
                 console.error('Error deleting blog:', error);
@@ -61,5 +62,25 @@ const Blog = ({blog,updateBlogs, user,deleteBlogs}) => {
         </>
     )
 }
+
+Blog.propTypes = {
+    blog: PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      title: PropTypes.string.isRequired,
+      author: PropTypes.string.isRequired,
+      url: PropTypes.string.isRequired,
+      likes: PropTypes.number.isRequired,
+      user: PropTypes.shape({
+        id: PropTypes.string.isRequired,
+        username: PropTypes.string.isRequired,
+      }),
+    }).isRequired,
+    updateBlogs: PropTypes.func.isRequired,
+    deleteBlogs: PropTypes.func.isRequired,
+    user: PropTypes.shape({
+        id: PropTypes.string.isRequired,
+        username: PropTypes.string.isRequired,
+    }),
+  }
 
 export default Blog

@@ -3,6 +3,7 @@ import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import Notification from './components/Notifications'
+import Togglable from './components/Togglable';
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [messageType, setMessageType] = useState('');
@@ -127,20 +128,27 @@ const App = () => {
   return (
     <div>
       <Notification message={errorMessage} type={messageType} />
-      {user === null ?
-        loginForm() :
-          <div>
-              <h2>blogs</h2>
-              <p>{username} logged-in <button onClick={logOut} style={{ backgroundColor: 'grey' }}>Logout</button></p>
-              <h2>Create New Blog</h2>
-                {blogForm()}
-              {blogs.map(blog =>
-                <Blog key={blog.id} blog={blog} />
-              )}
-          </div>
-        }
+      {user === null ? (
+        loginForm()
+      ) : (
+        <div>
+          <h2>blogs</h2>
+          <p>
+            {username} logged-in{' '}
+            <button onClick={logOut} style={{ backgroundColor: 'grey' }}>
+              Logout
+            </button>
+          </p>
+          <Togglable buttonLabel="create new blog">
+            {blogForm()}
+          </Togglable>
+          {blogs.map((blog) => (
+            <Blog key={blog.id} blog={blog} />
+          ))}
+        </div>
+      )}
     </div>
-  )
+  );
 }
 
 export default App

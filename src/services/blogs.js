@@ -11,11 +11,11 @@ const token = window.localStorage.getItem('loggedUser')
   };
 const getAll = async() => {
   try {
-    const response = await axios.get(baseUrl);
+    const response = await axios.get(baseUrl,config);
     return response.data;
   } catch (error) {
     console.error('Error fetching blogs:', error);
-    throw error; // Optionally rethrow or handle the error as needed
+    throw error; 
   }
 }
 
@@ -34,4 +34,14 @@ const updateBlog = async (id, updatedBlog) => {
   }
 };
 
-export default { getAll,createBlog,  updateBlog}
+const deleteBlog = async(id) => {
+  try {
+    const response = await axios.delete(`${baseUrl}/${id}`,config)
+    return response.status;
+  }catch (error) {
+    console.error('Error deleting blog:', error);
+    throw error;
+  }
+}
+
+export default { getAll, createBlog,  updateBlog, deleteBlog }

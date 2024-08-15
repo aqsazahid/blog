@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import blogService from '../services/blogs'
-const Blog = ({blog,updateBlogs}) => {
+const Blog = ({blog,updateBlogs, user,deleteBlogs}) => {
     const [detailsVisible, setDetailsVisible] = useState(false);
 
     const toggleDetails = () => {
@@ -20,12 +20,24 @@ const Blog = ({blog,updateBlogs}) => {
             ...blog,
             likes: blog.likes + 1
           };
-          updateBlogs(updatedBlog)
+            updateBlogs(updatedBlog)
             await blogService.updateBlog(blog.id, updatedBlog);
         } catch (error) {
           console.error('Error liking blog:', error);
         }
     };
+
+    const handleDelete = async() => {
+        const confirmDelete = window.confirm(`Are you sure you want to delete the blog "${blog.title}"?`);
+        if (confirmDelete) {
+            try {
+                const res = await blogService.deleteBlog(blog.id)
+                deleteBlogs(blog.id)
+            }catch (error) {
+                console.error('Error deleting blog:', error);
+              }
+        }
+    }
     return (
         <>
             <div style={blogStyle}>
@@ -41,6 +53,9 @@ const Blog = ({blog,updateBlogs}) => {
                     <a href="#"><p>{blog.url}</p></a>
                     <p>likes {blog.likes} <button onClick={handleLike}>like</button></p>
                     <p>{blog.user && blog.user.username}</p>
+                    {user.username === blog.user.username && 
+                        <button onClick={handleDelete}>delete</button>
+                    }
                 </div>
             }
         </>
